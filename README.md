@@ -1,1 +1,1 @@
-# oracle-access-sample
+# db-access-sample
