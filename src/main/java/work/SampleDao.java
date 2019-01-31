@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class SampleDao {
 
     private final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private final String JDBC_URL = "jdbc:mysql://localhost/test_db?useSSL=false";
+    private final String JDBC_URL = "jdbc:mysql://localhost/develop?useSSL=false";
     private final String USER_ID = "root";
     private final String USER_PASS = "pass";
 
