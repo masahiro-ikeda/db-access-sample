@@ -10,7 +10,7 @@ public class SampleDao {
     private final String USER_ID = "root";
     private final String USER_PASS = "pass";
 
-    public void insert() {
+    public void insert(SampleDto dto) {
 
         // JDBCドライバのロード
         try {
@@ -40,6 +40,11 @@ public class SampleDao {
             builder.append(")                           ");
 
             ps = con.prepareStatement(builder.toString());
+            ps.setInt(1, dto.getId());
+            ps.setString(2, dto.getName());
+            ps.setString(3, dto.getMessage());
+            ps.setTimestamp(4, dto.getCreatedAt());
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -93,7 +98,7 @@ public class SampleDao {
             ps = con.prepareStatement(builder.toString());
             rs = ps.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 SampleDto dto = new SampleDto();
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
