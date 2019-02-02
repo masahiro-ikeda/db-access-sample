@@ -3,14 +3,14 @@ package work;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class SampleDao {
+public class MessageDao {
 
     private final String DRIVER_NAME = "com.mysql.jdbc.Driver";
-    private final String JDBC_URL = "jdbc:mysql://localhost/develop?useSSL=false";
-    private final String USER_ID = "root";
+    private final String JDBC_URL  = "jdbc:mysql://localhost/develop?useSSL=false";
+    private final String USER_ID   = "root";
     private final String USER_PASS = "pass";
 
-    public void insert(SampleDto dto) {
+    public void insert(MessageDto dto) {
 
         // JDBCドライバのロード
         try {
@@ -65,9 +65,9 @@ public class SampleDao {
         }
     }
 
-    public ArrayList<SampleDto> select() {
+    public ArrayList<MessageDto> select() {
 
-        ArrayList<SampleDto> list = new ArrayList<>();
+        ArrayList<MessageDto> list = new ArrayList<>();
 
         // JDBCドライバのロード
         try {
@@ -99,7 +99,7 @@ public class SampleDao {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                SampleDto dto = new SampleDto();
+                MessageDto dto = new MessageDto();
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
                 dto.setMessage(rs.getString("message"));

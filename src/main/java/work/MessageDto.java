@@ -2,7 +2,7 @@ package work;
 
 import java.sql.Timestamp;
 
-public class SampleDto {
+public class MessageDto {
     private int id;
     private String name;
     private String message;
