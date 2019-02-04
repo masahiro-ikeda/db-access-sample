@@ -11,18 +11,19 @@ public class MessageInsert {
      *  - 投稿者名
      *  - 投稿内容
      *
-     *  例：1 ikeda Hello Everyone!!
+     *  例：1 "ikeda" "Hello World!!"
      */
     public static void main(String[] args) {
 
-        MessageDao dao = new MessageDao();
+        // コマンドラインで入力した値をDtoクラスに格納
         MessageDto dto = new MessageDto();
-
         dto.setId(Integer.parseInt(args[0]));
         dto.setName(args[1]);
         dto.setMessage(args[2]);
         dto.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
+        // Daoクラスの呼び出し
+        MessageDao dao = new MessageDao();
         dao.insert(dto);
     }
 }
