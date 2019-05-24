@@ -1,15 +1,16 @@
 package work;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import oracle.jdbc.datasource.OracleDataSource;
-import oracle.jdbc.replay.OracleDataSourceImpl;
-
 public class MessageDao {
+
+	// JDBCドライバの相対パス
+	private static final String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 
 	// データベース接続に必要なデータ(接続文字列と呼ばれる)
 	private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:ORCL";
@@ -27,8 +28,12 @@ public class MessageDao {
 	 */
 	public void insert(MessageDto dto) {
 
-		// データベースへの接続管理を行うクラス
-		OracleDataSource ds = null;
+		// JDBCドライバをロード＆接続先として指定
+		try {
+			Class.forName(DRIVER_NAME);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		// データベースとの接続状態を保持するクラス
 		Connection con = null;
@@ -38,14 +43,9 @@ public class MessageDao {
 
 		// データベース接続処理は検査例外を伴うので例外処理を必ず実装する
 		try {
-			// データソースをインスタンス化
-			ds = new OracleDataSourceImpl();
 
-			// 接続文字列をデータソースにセットする
-			ds.setURL(JDBC_URL);
-
-			// ユーザIDとパスワードをセットして接続実施
-			con = ds.getConnection(USER_ID, USER_PASS);
+			// 接続先文字列とユーザIDとパスワードをセットして接続実施
+			con = DriverManager.getConnection(JDBC_URL, USER_ID, USER_PASS);
 
 			// SQL文をStringBuilderクラスを使って用意する
 			StringBuilder builder = new StringBuilder();
@@ -76,10 +76,14 @@ public class MessageDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// con, psインスタンスが使っているメモリを開放
+			// con, psインスタンスが使っているメモリ領域を開放
 			try {
-				con.close();
-				ps.close();
+				if (ps != null) {
+					ps.close();
+				}
+				if (con != null) {
+					con.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -95,8 +99,12 @@ public class MessageDao {
 
 		ArrayList<MessageDto> list = new ArrayList<>();
 
-		// データベースへの接続管理を行うクラス
-		OracleDataSource ds = null;
+		// JDBCドライバをロード＆接続先として指定
+		try {
+			Class.forName(DRIVER_NAME);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		// データベースとの接続状態を保持するクラス
 		Connection con = null;
@@ -109,14 +117,9 @@ public class MessageDao {
 
 		// データベース接続処理は検査例外を伴うので例外処理を必ず実装する
 		try {
-			// データソースをインスタンス化
-			ds = new OracleDataSourceImpl();
 
-			// 接続文字列をデータソースにセットする
-			ds.setURL(JDBC_URL);
-
-			// ユーザIDとパスワードをセットして接続実施
-			con = ds.getConnection(USER_ID, USER_PASS);
+			// 接続先文字列とユーザIDとパスワードをセットして接続実施
+			con = DriverManager.getConnection(JDBC_URL, USER_ID, USER_PASS);
 
 			// SQL文をStringBuilderクラスを使って用意する
 			StringBuilder builder = new StringBuilder();
@@ -153,14 +156,20 @@ public class MessageDao {
 			e.printStackTrace();
 		} finally {
 			try {
-				// con, ps, rsインスタンスが使っているメモリを開放
-				con.close();
-				ps.close();
-				rs.close();
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (con != null) {
+					con.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+
 		// 呼び出し元に取得結果を返却
 		return list;
 	}
